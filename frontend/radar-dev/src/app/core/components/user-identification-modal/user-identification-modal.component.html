@@ -1,0 +1,16 @@
+<div class="modal-overlay">
+  <div class="modal-box">
+    <h2>Bem-vindo ao Radar Dev</h2>
+    <p>Informe seu nome para continuar:</p>
+    <input
+      type="text"
+      [(ngModel)]="userName"
+      placeholder="Seu nome"
+      (keyup.enter)="confirm()"
+      autofocus
+    />
+    <button (click)="confirm()" [disabled]="!userName.trim()">
+      Continuar
+    </button>
+  </div>
+</div>

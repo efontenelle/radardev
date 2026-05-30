@@ -1,0 +1,12 @@
+@if (showModal) {
+  <app-user-identification-modal (confirmed)="onUserConfirmed($event)" />
+}
+
+<header class="app-header">
+  <div class="app-header__brand">Radar Dev</div>
+  <div class="app-header__user">{{ userName || '—' }}</div>
+  <div class="app-header__status" id="connection-status">—</div>
+</header>
+<main class="app-content">
+  <router-outlet />
+</main>
