@@ -47,11 +47,43 @@ public class AzureDevOpsService : IAzureDevOpsService
         return result?.WorkItems.Select(w => w.Id) ?? [];
     }
 
-    public Task<IEnumerable<WorkItemRaw>> GetWorkItemsBatchAsync(IEnumerable<int> ids)
-        => throw new NotImplementedException();
+    public async Task<IEnumerable<WorkItemRaw>> GetWorkItemsBatchAsync(IEnumerable<int> ids)
+    {
+        var allItems = new List<WorkItemRaw>();
+        var idList = ids.ToList();
+        const int batchSize = 200;
+        var fields = "System.Id,System.Title,System.WorkItemType,System.State,System.CreatedDate,System.ChangedDate";
 
-    public Task<IEnumerable<WorkItemUpdateRaw>> GetWorkItemUpdatesAsync(int workItemId)
-        => throw new NotImplementedException();
+        for (int i = 0; i < idList.Count; i += batchSize)
+        {
+            var batch = idList.Skip(i).Take(batchSize);
+            var idsParam = string.Join(",", batch);
+            var url = $"https://dev.azure.com/{_config.Organization}/{_config.Project}/_apis/wit/workitems?ids={idsParam}&fields={fields}&api-version=7.1";
+
+            var response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<WorkItemBatchResultRaw>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (result?.Value != null)
+                allItems.AddRange(result.Value);
+        }
+
+        return allItems;
+    }
+
+    public async Task<IEnumerable<WorkItemUpdateRaw>> GetWorkItemUpdatesAsync(int workItemId)
+    {
+        var url = $"https://dev.azure.com/{_config.Organization}/{_config.Project}/_apis/wit/workitems/{workItemId}/updates?api-version=7.1";
+
+        var response = await _httpClient.GetAsync(url);
+        response.EnsureSuccessStatusCode();
+
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<WorkItemUpdatesResultRaw>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        return result?.Value ?? [];
+    }
 
     public Task<BoardRaw> GetBoardAsync()
         => throw new NotImplementedException();
