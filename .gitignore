@@ -480,3 +480,20 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+##
+## Angular / Frontend
+##
+dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+##
+## Production secrets (appsettings with real credentials)
+## NOTE: appsettings.json and appsettings.Development.json are NOT ignored
+##
+appsettings.Production.json
+appsettings.Staging.json
+appsettings.Local.json
