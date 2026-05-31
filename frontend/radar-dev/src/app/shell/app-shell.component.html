@@ -5,6 +5,10 @@
 <header class="app-header">
   <div class="app-header__brand">Radar Dev</div>
   <div class="app-header__user">{{ userName || '—' }}</div>
+  <div class="app-header__config">
+    @if (isBoardConfigured) { <span class="config-ok">✓ Configurado</span> }
+    @else { <a routerLink="/settings" class="config-link">Configurar board</a> }
+  </div>
   <div class="app-header__status" [class.connected]="connectionStatus === 'connected'" [class.disconnected]="connectionStatus === 'disconnected'">
     @if (connectionStatus === 'connected') { ● Conectado }
     @else if (connectionStatus === 'disconnected') { ● Desconectado }
