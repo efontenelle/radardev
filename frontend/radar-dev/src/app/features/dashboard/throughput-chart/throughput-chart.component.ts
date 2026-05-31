@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 import 'chart.js/auto';
 import { ThroughputWeek } from '../../../core/models/metrics.model';
@@ -8,7 +8,7 @@ import { ThroughputWeek } from '../../../core/models/metrics.model';
 @Component({
   selector: 'app-throughput-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, NgChartsModule],
   templateUrl: './throughput-chart.component.html',
   styleUrl: './throughput-chart.component.scss'
 })

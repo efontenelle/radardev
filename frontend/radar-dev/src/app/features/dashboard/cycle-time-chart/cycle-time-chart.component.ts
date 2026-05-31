@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 import { ChartOptions } from 'chart.js';
 import 'chart.js/auto';
 import { CycleTimePoint, CyclePercentiles } from '../../../core/models/metrics.model';
@@ -8,7 +8,7 @@ import { CycleTimePoint, CyclePercentiles } from '../../../core/models/metrics.m
 @Component({
   selector: 'app-cycle-time-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, NgChartsModule],
   templateUrl: './cycle-time-chart.component.html',
   styleUrl: './cycle-time-chart.component.scss'
 })
