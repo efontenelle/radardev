@@ -10,6 +10,9 @@ public class AzureDevOpsConfig
     public string Organization { get; set; } = string.Empty;
     public string Project { get; set; } = string.Empty;
     public string BoardName { get; set; } = string.Empty;
+    public string TeamName { get; set; } = string.Empty;
+
+    public string ResolvedTeamName => string.IsNullOrWhiteSpace(TeamName) ? BoardName : TeamName;
 }
 
 public class AzureDevOpsConfigValidator : IValidateOptions<AzureDevOpsConfig>

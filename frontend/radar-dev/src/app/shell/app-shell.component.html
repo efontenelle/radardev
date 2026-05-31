@@ -3,18 +3,41 @@
 }
 
 <header class="app-header">
-  <div class="app-header__brand">Radar Dev</div>
-  <div class="app-header__user">{{ userName || '—' }}</div>
-  <div class="app-header__config">
-    @if (isBoardConfigured) { <span class="config-ok">✓ Configurado</span> }
-    @else { <a routerLink="/settings" class="config-link">Configurar board</a> }
+  <div class="app-header__left">
+    <div class="app-header__brand">
+      <svg class="brand-icon" width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="10" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="11" cy="11" r="1.75" fill="currentColor"/>
+        <line x1="11" y1="1" x2="11" y2="4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="11" y1="17.5" x2="11" y2="21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="1" y1="11" x2="4.5" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="17.5" y1="11" x2="21" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">RadarDev</span>
+    </div>
   </div>
-  <div class="app-header__status" [class.connected]="connectionStatus === 'connected'" [class.disconnected]="connectionStatus === 'disconnected'">
-    @if (connectionStatus === 'connected') { ● Conectado }
-    @else if (connectionStatus === 'disconnected') { ● Desconectado }
-    @else { ○ Conectando... }
+
+  <nav class="app-header__nav">
+    <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{exact:true}" class="nav-link">Dashboard</a>
+    <a routerLink="/settings" routerLinkActive="is-active" class="nav-link">Configurações</a>
+  </nav>
+
+  <div class="app-header__right">
+    <div class="status-pill" [class.is-connected]="connectionStatus === 'connected'" [class.is-disconnected]="connectionStatus === 'disconnected'" [class.is-connecting]="connectionStatus !== 'connected' && connectionStatus !== 'disconnected'">
+      <span class="status-dot"></span>
+      @if (connectionStatus === 'connected') { Conectado }
+      @else if (connectionStatus === 'disconnected') { Desconectado }
+      @else { Conectando }
+    </div>
+
+    <div class="user-chip">
+      <span class="user-avatar">{{ (userName || '?').charAt(0).toUpperCase() }}</span>
+      <span class="user-name">{{ userName || '—' }}</span>
+    </div>
   </div>
 </header>
+
 <main class="app-content">
   <router-outlet />
 </main>

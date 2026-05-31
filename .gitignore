@@ -497,3 +497,12 @@ yarn-error.log*
 appsettings.Production.json
 appsettings.Staging.json
 appsettings.Local.json
+
+##
+## AI/Editor tool directories (local config, not project files)
+##
+.agents/
+.claude/
+.cursor/
+.windsurf/
+.specs/

@@ -1,21 +1,158 @@
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 1.5rem;
   height: 56px;
-  background: #1a1a2e;
-  color: #fff;
-  gap: 1rem;
+  padding: 0 var(--space-6);
+  background: oklch(99% 0.003 260);
+  border-bottom: 1px solid var(--color-border-soft);
+  gap: var(--space-6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 
-  &__brand { font-weight: 600; font-size: 1.1rem; flex: 1; }
-  &__user  { font-size: 0.9rem; color: #ccc; }
-  &__status {
-    font-size: 0.85rem;
-    color: #aaa;
-    &.connected    { color: #4caf50; }
-    &.disconnected { color: #f44336; }
+  &__left { display: flex; align-items: center; }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    flex: 1;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-left: auto;
   }
 }
 
-.app-content { padding: 1.5rem; }
+.app-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  margin-right: var(--space-4);
+}
+
+.brand-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--color-text-primary);
+}
+
+.nav-link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  transition: color var(--duration-fast) var(--ease-out-quart),
+              background var(--duration-fast) var(--ease-out-quart);
+
+  &:hover {
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    text-decoration: none;
+  }
+
+  &.is-active {
+    color: var(--color-text-primary);
+    background: var(--color-surface);
+    font-weight: 600;
+  }
+}
+
+/* Status pill */
+.status-pill {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-tertiary);
+  background: var(--color-surface);
+
+  &.is-connected {
+    color: var(--color-success);
+    border-color: oklch(from var(--color-success) l c h / 0.3);
+    background: var(--color-success-soft);
+
+    .status-dot { background: var(--color-success); }
+  }
+
+  &.is-disconnected {
+    color: var(--color-error);
+    border-color: oklch(from var(--color-error) l c h / 0.3);
+    background: var(--color-error-soft);
+
+    .status-dot { background: var(--color-error); }
+  }
+
+  &.is-connecting {
+    .status-dot {
+      background: var(--color-text-tertiary);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+  }
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* User chip */
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.user-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+/* Main content */
+.app-content {
+  padding: var(--space-8) var(--space-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}

@@ -1,1 +1,125 @@
-/* You can add global styles to this file, and also import other style files */
+/* ─── Design Tokens ─────────────────────────────────────────────────────── */
+:root {
+  /* Palette — slate-tinted neutrals with cobalt accent */
+  --color-bg:          oklch(98.5% 0.004 260);
+  --color-surface:     oklch(96.5% 0.006 260);
+  --color-border:      oklch(88% 0.012 260);
+  --color-border-soft: oklch(93% 0.008 260);
+
+  --color-text-primary:   oklch(20% 0.025 265);
+  --color-text-secondary: oklch(44% 0.018 265);
+  --color-text-tertiary:  oklch(62% 0.012 265);
+  --color-text-inverse:   oklch(97% 0.004 260);
+
+  --color-accent:       oklch(50% 0.22 258);
+  --color-accent-hover: oklch(45% 0.22 258);
+  --color-accent-soft:  oklch(94% 0.04 258);
+  --color-accent-text:  oklch(97% 0.01 258);
+
+  --color-success:      oklch(56% 0.16 152);
+  --color-success-soft: oklch(94% 0.04 152);
+  --color-warning:      oklch(66% 0.16 72);
+  --color-warning-soft: oklch(95% 0.05 72);
+  --color-error:        oklch(56% 0.2 25);
+  --color-error-soft:   oklch(95% 0.04 25);
+
+  /* Typography */
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+
+  --text-xs:   clamp(0.7rem,  1.5vw, 0.75rem);
+  --text-sm:   clamp(0.8rem,  1.8vw, 0.875rem);
+  --text-base: clamp(0.9rem,  2vw,   1rem);
+  --text-md:   clamp(1rem,    2.2vw, 1.125rem);
+  --text-lg:   clamp(1.1rem,  2.5vw, 1.25rem);
+  --text-xl:   clamp(1.25rem, 3vw,   1.5rem);
+  --text-2xl:  clamp(1.5rem,  4vw,   2rem);
+  --text-3xl:  clamp(2rem,    5vw,   2.75rem);
+
+  /* Spacing rhythm */
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px oklch(0% 0 0 / 0.06);
+  --shadow-sm: 0 1px 4px oklch(0% 0 0 / 0.08), 0 0 1px oklch(0% 0 0 / 0.04);
+  --shadow-md: 0 4px 16px oklch(0% 0 0 / 0.1), 0 1px 4px oklch(0% 0 0 / 0.06);
+  --shadow-lg: 0 8px 32px oklch(0% 0 0 / 0.12), 0 2px 8px oklch(0% 0 0 / 0.08);
+
+  /* Transitions */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast:  120ms;
+  --duration-base:  200ms;
+  --duration-slow:  350ms;
+}
+
+/* ─── Reset & Base ───────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+/* ─── Focus ring ─────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Utility classes ────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

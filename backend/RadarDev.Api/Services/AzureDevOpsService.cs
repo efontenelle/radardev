@@ -1,4 +1,4 @@
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
@@ -19,9 +19,11 @@ public class AzureDevOpsService : IAzureDevOpsService
 {
     private readonly HttpClient _httpClient;
     private readonly AzureDevOpsConfig _config;
+    private readonly ILogger<AzureDevOpsService> _logger;
 
-    public AzureDevOpsService(IHttpClientFactory factory, IOptions<AzureDevOpsConfig> options)
+    public AzureDevOpsService(IHttpClientFactory factory, IOptions<AzureDevOpsConfig> options, ILogger<AzureDevOpsService> logger)
     {
+        _logger = logger;
         _config = options.Value;
         _httpClient = factory.CreateClient("AzureDevOps");
 
@@ -85,6 +87,22 @@ public class AzureDevOpsService : IAzureDevOpsService
         return result?.Value ?? [];
     }
 
-    public Task<BoardRaw> GetBoardAsync()
-        => throw new NotImplementedException();
+    public async Task<BoardRaw> GetBoardAsync()
+    {
+        var team = Uri.EscapeDataString(_config.ResolvedTeamName);
+        var board = Uri.EscapeDataString(_config.BoardName);
+        var url = $"https://dev.azure.com/{_config.Organization}/{_config.Project}/{team}/_apis/work/boards/{board}?api-version=7.1";
+
+        _logger.LogInformation("GetBoardAsync URL: {Url}", url);
+
+        var response = await _httpClient.GetAsync(url);
+        response.EnsureSuccessStatusCode();
+
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonSerializer.Deserialize<BoardRaw>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        return result ?? new BoardRaw();
+    }
 }
+
+

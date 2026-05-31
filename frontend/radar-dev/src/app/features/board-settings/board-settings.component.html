@@ -1,54 +1,92 @@
-<div class="settings-container">
-  <h1>Configuração do Board</h1>
-
-  <div *ngIf="staleWarning" class="warning-banner">
-    As colunas do board foram alteradas. Reconfigure as métricas.
+<div class="settings-page">
+  <div class="page-header">
+    <h1>Configuração do Board</h1>
+    <p>Defina as colunas de início e fim do fluxo para calcular métricas de ciclo.</p>
   </div>
 
-  <div *ngIf="loading" class="loading">Carregando colunas do board...</div>
+  @if (staleWarning) {
+    <div class="alert alert--warning">
+      <svg class="alert-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M8 6v3M8 11.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M6.8 2.4L1.2 12a1.4 1.4 0 001.2 2.1h11.2a1.4 1.4 0 001.2-2.1L9.2 2.4a1.4 1.4 0 00-2.4 0z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      <span>As colunas do board foram alteradas. Revise a configuração abaixo.</span>
+    </div>
+  }
 
-  <div *ngIf="loadError" class="error-state">
-    <p>Não foi possível carregar as colunas do board.</p>
-    <button (click)="loadBoard()">Tentar novamente</button>
-  </div>
+  @if (loading) {
+    <div class="loading-state">
+      <span class="spinner"></span>
+      Carregando colunas do board...
+    </div>
+  }
 
-  <form *ngIf="!loading && !loadError && board" (ngSubmit)="onSave()">
-    <section class="form-section">
-      <h2>Colunas do fluxo</h2>
-
-      <div class="form-field">
-        <label for="startColumn">Coluna de início</label>
-        <select id="startColumn" [(ngModel)]="startColumn" name="startColumn">
-          <option value="">Selecione...</option>
-          <option *ngFor="let col of board.columns" [value]="col.name">{{ col.name }}</option>
-        </select>
+  @if (loadError) {
+    <div class="alert alert--error">
+      <svg class="alert-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <span>Não foi possível carregar as colunas do board.</span>
+        <button class="btn-ghost" style="margin-top: var(--space-3);" (click)="loadBoard()">Tentar novamente</button>
       </div>
+    </div>
+  }
 
-      <div class="form-field">
-        <label for="endColumn">Coluna de fim</label>
-        <select id="endColumn" [(ngModel)]="endColumn" name="endColumn">
-          <option value="">Selecione...</option>
-          <option *ngFor="let col of availableEndColumns" [value]="col.name">{{ col.name }}</option>
-        </select>
+  @if (!loading && !loadError && board) {
+    <form class="settings-form" (ngSubmit)="onSave()">
+      <section class="form-section">
+        <span class="section-label">Colunas do fluxo</span>
+
+        <div class="form-field">
+          <label class="field-label" for="startColumn">Coluna de início</label>
+          <select id="startColumn" class="field-select" [(ngModel)]="startColumn" name="startColumn">
+            <option value="">Selecione uma coluna...</option>
+            <option *ngFor="let col of board.columns" [value]="col.name">{{ col.name }}</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label class="field-label" for="endColumn">Coluna de fim</label>
+          <select id="endColumn" class="field-select" [(ngModel)]="endColumn" name="endColumn">
+            <option value="">Selecione uma coluna...</option>
+            <option *ngFor="let col of availableEndColumns" [value]="col.name">{{ col.name }}</option>
+          </select>
+        </div>
+      </section>
+
+      @if (board.lanes.length > 0) {
+        <section class="form-section">
+          <span class="section-label">Lanes</span>
+          <div class="lanes-list">
+            @for (lane of board.lanes; track lane) {
+              <label class="lane-item">
+                <input
+                  type="checkbox"
+                  [checked]="isLaneSelected(lane)"
+                  (change)="toggleLane(lane)"
+                />
+                <span class="lane-name">{{ lane }}</span>
+              </label>
+            }
+          </div>
+        </section>
+      }
+
+      @if (validationError) {
+        <p class="validation-msg">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          {{ validationError }}
+        </p>
+      }
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary">Salvar configuração</button>
       </div>
-    </section>
-
-    <section class="form-section" *ngIf="board.lanes.length > 0">
-      <h2>Lanes</h2>
-      <div *ngFor="let lane of board.lanes" class="checkbox-field">
-        <label>
-          <input
-            type="checkbox"
-            [checked]="isLaneSelected(lane)"
-            (change)="toggleLane(lane)"
-          />
-          {{ lane }}
-        </label>
-      </div>
-    </section>
-
-    <p *ngIf="validationError" class="validation-error">{{ validationError }}</p>
-
-    <button type="submit" class="save-button">Salvar configuração</button>
-  </form>
+    </form>
+  }
 </div>

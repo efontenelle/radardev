@@ -20,12 +20,19 @@ public class BoardService : IBoardService
     {
         var raw = await _azureDevOps.GetBoardAsync();
 
+        var columnTypeOrder = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["incoming"] = 0,
+            ["inProgress"] = 1,
+            ["outgoing"] = 2
+        };
+
         var columns = raw.Columns
-            .OrderBy(c => c.ColumnType)
+            .OrderBy(c => columnTypeOrder.TryGetValue(c.ColumnType, out var order) ? order : 1)
             .Select((c, index) => new BoardColumnDto(
                 c.Name,
                 index,
-                string.Join(", ", c.StateMappings.Values.SelectMany(v => v))
+                string.Join(", ", c.StateMappings.Values)
             ));
 
         var lanes = raw.Rows.Select(r => r.Name);
