@@ -1,0 +1,43 @@
+<div class="dashboard">
+  <div class="dashboard__toolbar">
+    <app-period-filter (rangeChange)="onRangeChange($event)" />
+  </div>
+
+  @if (loading) {
+    <div class="dashboard__loading">
+      <span class="spinner"></span>
+      Calculando métricas…
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert--error">
+      <svg class="alert-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 5v3.5M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <span>Não foi possível carregar as métricas.</span>
+        <button class="btn-ghost" style="margin-top: var(--space-3);" (click)="retry()">Tentar novamente</button>
+      </div>
+    </div>
+  }
+
+  @if (!loading && !error) {
+    <div class="dashboard__metrics">
+      <section class="dashboard__card">
+        <app-cycle-time-chart
+          [points]="cycleTimePoints"
+          [percentiles]="percentiles" />
+      </section>
+
+      <section class="dashboard__card">
+        <app-throughput-chart [weeks]="throughputWeeks" />
+      </section>
+
+      <section class="dashboard__card">
+        <app-age-ranking [items]="ageItems" />
+      </section>
+    </div>
+  }
+</div>
