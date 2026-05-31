@@ -1,0 +1,52 @@
+<section class="metric-section">
+  <header class="metric-section__header">
+    <div class="metric-section__meta">
+      <span class="metric-section__eyebrow">Itens em andamento</span>
+      <h2 class="metric-section__title">Age of Work Items</h2>
+    </div>
+
+    @if (items.length > 0) {
+      <span class="age-count">{{ items.length }} {{ items.length === 1 ? 'item ativo' : 'itens ativos' }}</span>
+    }
+  </header>
+
+  @if (items.length > 0) {
+    <div class="age-table-wrap">
+      <table class="age-table" aria-label="Ranking de work items por idade">
+        <thead>
+          <tr>
+            <th class="age-table__th age-table__th--title">Título</th>
+            <th class="age-table__th age-table__th--type">Tipo</th>
+            <th class="age-table__th age-table__th--age">Idade</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of items; track item.id) {
+            <tr class="age-table__row" [class.age-table__row--stale]="isStale(item.ageDays)">
+              <td class="age-table__td age-table__td--title">
+                <span class="age-table__item-title">{{ item.title }}</span>
+              </td>
+              <td class="age-table__td age-table__td--type">
+                <span class="age-table__type-badge">{{ item.type }}</span>
+              </td>
+              <td class="age-table__td age-table__td--age">
+                <div class="age-bar" [class.age-bar--stale]="isStale(item.ageDays)">
+                  <div class="age-bar__fill" [style.width]="barWidth(item.ageDays)"></div>
+                  <span class="age-bar__label">{{ item.ageDays | number:'1.0-1' }}d</span>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="metric-section__empty">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.25"/>
+        <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <p>Nenhum card ativo no fluxo</p>
+    </div>
+  }
+</section>
