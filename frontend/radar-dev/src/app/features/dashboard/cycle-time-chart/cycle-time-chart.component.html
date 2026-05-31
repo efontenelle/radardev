@@ -1,0 +1,39 @@
+<section class="metric-section">
+  <header class="metric-section__header">
+    <div class="metric-section__meta">
+      <span class="metric-section__eyebrow">Tempo de fluxo</span>
+      <h2 class="metric-section__title">Cycle Time</h2>
+    </div>
+
+    @if (hasData) {
+      <div class="metric-section__pills">
+        <div class="metric-pill metric-pill--p85">
+          <span class="metric-pill__label">P85</span>
+          <span class="metric-pill__value">{{ percentiles.p85 }}d</span>
+        </div>
+        <div class="metric-pill metric-pill--p90">
+          <span class="metric-pill__label">P90</span>
+          <span class="metric-pill__value">{{ percentiles.p90 }}d</span>
+        </div>
+      </div>
+    }
+  </header>
+
+  @if (hasData) {
+    <div class="metric-section__chart-wrap">
+      <canvas baseChart
+        [type]="'scatter'"
+        [data]="chartData"
+        [options]="chartOptions">
+      </canvas>
+    </div>
+  } @else {
+    <div class="metric-section__empty">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.25"/>
+        <path d="M8 12h4M14 8v8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+      </svg>
+      <p>Nenhum card entregue no período</p>
+    </div>
+  }
+</section>
