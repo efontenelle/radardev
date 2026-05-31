@@ -20,13 +20,14 @@ builder.Services.AddHttpClient("AzureDevOps");
 builder.Services.AddScoped<IAzureDevOpsService, AzureDevOpsService>();
 builder.Services.AddScoped<IWorkItemService, WorkItemService>();
 builder.Services.AddScoped<IBoardService, BoardService>();
+builder.Services.AddScoped<IMetricsService, MetricsService>();
 
 // CORS for development
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Development", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200", "http://localhost:54735")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -40,8 +41,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
 app.UseCors("Development");
+app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
