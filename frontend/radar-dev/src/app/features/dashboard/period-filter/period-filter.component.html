@@ -1,0 +1,31 @@
+<div class="period-filter">
+  <div class="period-filter__fields">
+    <label class="period-filter__label">
+      <span>De</span>
+      <input
+        type="date"
+        class="period-filter__input"
+        [(ngModel)]="fromDate"
+        [max]="toDate"
+      />
+    </label>
+
+    <span class="period-filter__separator">—</span>
+
+    <label class="period-filter__label">
+      <span>Até</span>
+      <input
+        type="date"
+        class="period-filter__input"
+        [(ngModel)]="toDate"
+        [min]="fromDate"
+      />
+    </label>
+
+    <button class="period-filter__btn" (click)="onApply()">Aplicar</button>
+  </div>
+
+  @if (validationError) {
+    <p class="period-filter__error">{{ validationError }}</p>
+  }
+</div>
