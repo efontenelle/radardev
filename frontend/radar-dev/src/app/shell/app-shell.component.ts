@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../core/services/user.service';
@@ -23,7 +23,8 @@ export class AppShellComponent implements OnInit {
   constructor(
     private userService: UserService,
     private boardConfigService: BoardConfigService,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +40,10 @@ export class AppShellComponent implements OnInit {
   onUserConfirmed(name: string): void {
     this.userService.setUserName(name);
     this.userName = name;
+    this.isBoardConfigured = this.boardConfigService.hasConfig();
     this.showModal = false;
+    if (!this.isBoardConfigured) {
+      this.router.navigate(['/settings']);
+    }
   }
 }
