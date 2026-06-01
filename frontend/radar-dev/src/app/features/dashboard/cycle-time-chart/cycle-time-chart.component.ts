@@ -1,9 +1,10 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartOptions } from 'chart.js';
 import 'chart.js/auto';
 import { CycleTimePoint, CyclePercentiles } from '../../../core/models/metrics.model';
+import { ThemeService } from '../../../core/services/theme.service';
 
 @Component({
   selector: 'app-cycle-time-chart',
@@ -20,12 +21,23 @@ export class CycleTimeChartComponent implements OnChanges {
   chartOptions: ChartOptions<'scatter'> = {};
   hasData = false;
 
+  private readonly theme = inject(ThemeService);
+
+  constructor() {
+    effect(() => {
+      this.theme.effectiveTheme();
+      this.buildChart();
+    });
+  }
+
   ngOnChanges(): void {
     this.hasData = this.points.length > 0;
     this.buildChart();
   }
 
   private buildChart(): void {
+    const c = this.theme.chartPalette();
+
     if (!this.hasData) {
       this.chartData = { datasets: [] };
       return;
@@ -48,7 +60,7 @@ export class CycleTimeChartComponent implements OnChanges {
           type: 'line' as const,
           label: `P85`,
           data: [{ x: minX, y: this.percentiles.p85 }, { x: maxX, y: this.percentiles.p85 }],
-          borderColor: 'rgba(52, 160, 107, 0.7)',
+          borderColor: c.p85,
           borderWidth: 1.5,
           borderDash: [6, 3],
           pointRadius: 0,
@@ -60,7 +72,7 @@ export class CycleTimeChartComponent implements OnChanges {
           type: 'line' as const,
           label: `P90`,
           data: [{ x: minX, y: this.percentiles.p90 }, { x: maxX, y: this.percentiles.p90 }],
-          borderColor: 'rgba(196, 120, 40, 0.7)',
+          borderColor: c.p90,
           borderWidth: 1.5,
           borderDash: [3, 3],
           pointRadius: 0,
@@ -72,7 +84,7 @@ export class CycleTimeChartComponent implements OnChanges {
           type: 'scatter' as const,
           label: 'Cards',
           data: scatterData,
-          backgroundColor: 'rgba(61, 90, 224, 0.65)',
+          backgroundColor: c.accent,
           pointRadius: 5,
           pointHoverRadius: 7,
           pointBorderWidth: 0,
@@ -91,7 +103,7 @@ export class CycleTimeChartComponent implements OnChanges {
           min: minX,
           max: maxX,
           ticks: {
-            color: '#6b7494',
+            color: c.tick,
             font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
             maxTicksLimit: 8,
             callback: (value) => {
@@ -99,27 +111,27 @@ export class CycleTimeChartComponent implements OnChanges {
               return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
             },
           },
-          grid: { color: 'rgba(100, 116, 139, 0.1)' },
-          border: { color: 'rgba(100, 116, 139, 0.2)' },
+          grid: { color: c.grid },
+          border: { color: c.axisBorder },
         },
         y: {
           ticks: {
-            color: '#6b7494',
+            color: c.tick,
             font: { family: "'DM Sans', system-ui, sans-serif", size: 11 },
             callback: (v) => `${v}d`,
           },
-          grid: { color: 'rgba(100, 116, 139, 0.1)' },
-          border: { color: 'rgba(100, 116, 139, 0.2)' },
+          grid: { color: c.grid },
+          border: { color: c.axisBorder },
         },
       },
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#ffffff',
-          borderColor: '#d4d8e6',
+          backgroundColor: c.tooltipBg,
+          borderColor: c.tooltipBorder,
           borderWidth: 1,
-          titleColor: '#6b7494',
-          bodyColor: '#1e2340',
+          titleColor: c.tooltipTitle,
+          bodyColor: c.tooltipBody,
           padding: 12,
           cornerRadius: 6,
           callbacks: {
