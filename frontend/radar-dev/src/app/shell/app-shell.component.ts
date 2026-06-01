@@ -5,12 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../core/services/user.service';
 import { BoardConfigService } from '../core/services/board-config.service';
 import { UserIdentificationModalComponent } from '../core/components/user-identification-modal/user-identification-modal.component';
+import { ThemeToggleComponent } from './theme-toggle/theme-toggle.component';
 import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, UserIdentificationModalComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, UserIdentificationModalComponent, ThemeToggleComponent],
   templateUrl: './app-shell.component.html',
   styleUrl: './app-shell.component.scss'
 })

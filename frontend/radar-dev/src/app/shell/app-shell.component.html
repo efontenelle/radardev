@@ -24,6 +24,7 @@
   </nav>
 
   <div class="app-header__right">
+    <app-theme-toggle />
     <div class="status-pill" [class.is-connected]="connectionStatus === 'connected'" [class.is-disconnected]="connectionStatus === 'disconnected'" [class.is-connecting]="connectionStatus !== 'connected' && connectionStatus !== 'disconnected'">
       <span class="status-dot"></span>
       @if (connectionStatus === 'connected') { Conectado }

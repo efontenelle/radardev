@@ -1,0 +1,39 @@
+<div class="theme-toggle" role="group" aria-label="Tema da interface">
+  @for (m of modes; track m.value) {
+    <button
+      class="theme-toggle__btn"
+      [class.is-active]="theme.mode() === m.value"
+      [attr.aria-pressed]="theme.mode() === m.value"
+      [title]="m.label"
+      (click)="set(m.value)"
+      type="button"
+    >
+      @if (m.value === 'light') {
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="3.05" y1="3.05" x2="4.46" y2="4.46" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="11.54" y1="11.54" x2="12.95" y2="12.95" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="3.05" y1="12.95" x2="4.46" y2="11.54" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="11.54" y1="4.46" x2="12.95" y2="3.05" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      }
+      @if (m.value === 'dark') {
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M13.5 8.5A5.5 5.5 0 0 1 7.5 3C4.46 3 2 5.46 2 8.5S4.46 14 7.5 14a5.5 5.5 0 0 0 6-5.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      }
+      @if (m.value === 'system') {
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <rect x="1.5" y="2.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="5" y1="13.5" x2="11" y2="13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="11.5" x2="8" y2="13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      }
+      <span class="sr-only">{{ m.label }}</span>
+    </button>
+  }
+</div>
